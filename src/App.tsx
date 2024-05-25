@@ -2,14 +2,16 @@ import { useState } from 'react'
 import reactLogo from './assets/react.svg'
 import viteLogo from '/vite.svg'
 import './App.css'
-import Mainarea from './components/ui/main'
+import { InputForm } from './components/ui/main' 
+import { Content } from '@radix-ui/react-select'
 
 function App() {
-  const [count, setCount] = useState(0)
 
   return (
     <>
-      <Mainarea></Mainarea>
+    <div>
+      <InputForm></InputForm>
+    </div>
     </>
   )
 }

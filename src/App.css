@@ -40,3 +40,30 @@
 .read-the-docs {
   color: #888;
 }
+
+.display-flex {
+  display: flex;
+}
+
+.flex-direction-column {
+  flex-direction: column;
+}
+
+.mb-10 {
+  margin-bottom: 10px;
+}
+.display-flex {
+  display: flex;
+}
+
+.flex-wrap {
+  flex-wrap: wrap;
+}
+
+.justify-content-space-between {
+  justify-content: space-between;
+}
+
+.mb-20 {
+  margin-bottom: 20px;
+}
