@@ -23,8 +23,8 @@ import {
           <CardHeader>
             <CardTitle>Image Title</CardTitle>
             <CardDescription>
-              {flag}
-              {JSON.parse(content).brand}
+          
+              {content}
             </CardDescription>
           </CardHeader>
           <CardContent>

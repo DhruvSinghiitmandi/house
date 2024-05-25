@@ -1,4 +1,5 @@
 "use client"
+import axios from 'axios';
 
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
@@ -63,9 +64,28 @@ export function InputForm() {
    
   })
 
-  function onSubmit(data: z.infer<typeof FormSchema>) {
-    console.log("HI");
-    ref.current = { flag: 1, content: JSON.stringify(data)  }
+  async function onSubmit(data: z.infer<typeof FormSchema>) {
+    console.log(JSON.stringify(data) );
+    // const jso = JSON.parse(JSON.stringify(data)) ;
+    
+const url = 'http://127.0.0.1:8000/generate';
+const params = {
+  brand: data.brand,
+  feature: data.feature,
+  length: data.length,
+  tone: data.tone
+};
+
+await axios.post(url, { params })
+  .then(response => {
+    console.log("receivevd")
+    const con:string = JSON.parse(JSON.stringify(response)).data.output.toString();
+    ref.current = { flag: 1, content: con  }
+    console.log(response.data.output);
+  })
+  .catch(error => {
+    console.error('Error:', error);
+  });
     
   }
 
