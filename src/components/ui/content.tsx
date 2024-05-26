@@ -14,7 +14,7 @@ import axios from "axios";
 import GenProps from "@/utils/interfaces";
 
 
-import {  forwardRef, useEffect, useState } from "react";
+import {  forwardRef} from "react";
 
 
 const Gen = forwardRef<GenProps, {} >(({} , ref) => {
@@ -54,31 +54,6 @@ const Gen = forwardRef<GenProps, {} >(({} , ref) => {
 
   if (ref != null  && 'current' in ref && ref?.current?.flag) {
 
-    const [selection, setSelection] = useState<string>();
-    const [position, setPosition] = useState<Record<string, number>>();
-
-    useEffect(() => {
-      document.addEventListener('selectionchange', () => {
-        const activeSelection = document.getSelection();
-        const text = activeSelection?.toString();
-
-        if (!activeSelection || !text) {
-          setSelection(undefined);
-          return;
-        };
-
-        setSelection(text);
-
-        const rect = activeSelection.getRangeAt(0).getBoundingClientRect()
-
-        setPosition({
-          x: rect.left + (rect.width / 2) - (80 / 2),
-          y: rect.top + window.scrollY - 30,
-          width: rect.width,
-          height: rect.height,
-        })
-      });
-    }, []);
 
 
     return (

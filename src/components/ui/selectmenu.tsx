@@ -103,7 +103,7 @@ const SelectMenu = forwardRef<GenProps, {}>(({}, ref) => {
             axios.post(url, { params })
                 .then(response => {
                     setPosition(undefined)
-                    console.log("receivevd")
+                    console.log("received")
 
                     const con: string = JSON.parse(JSON.stringify(response)).data.output.toString();
                     ref.current = { flag: 1, content: con, brand: ref?.current?.brand, feature: ref?.current?.feature, length: ref?.current?.length, tone: ref?.current?.tone }
@@ -133,7 +133,7 @@ const SelectMenu = forwardRef<GenProps, {}>(({}, ref) => {
                         transform: `translate3d(${position.x}px, ${position.y}px, 0)`
                     }}
                 >
-                    <div className='p-1 ' > <Sparkles color="#f9f06b" />    </div>
+                    <div className='p-1 ' > <Sparkles color="#e5a50a" />    </div>
                     <div className='flex flex-col gap-6'>
                         <Button type='button' onClick={handleshort} className="text-s text-black bg-opacity hover:text-white hover:bg-opacity"><span id="share"  >Shorter</span>
                         </Button>
