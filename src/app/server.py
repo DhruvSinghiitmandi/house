@@ -79,6 +79,48 @@ async def generate(payload :  Dict[Any, Any]) -> Dict[str,str]:
 
 
 
+@app.post("/regenerate")
+async def regenerate(payload :  Dict[Any, Any]) -> Dict[str,str]: 
+
+        complete = payload['params']['complete']
+        selected = payload['params']['selected']
+        choice = payload['params']['choice']
+        # print()
+        
+
+        prompt = PromptTemplate(
+        input_variables=["complete","selected","choice"],
+        template=""" 
+                    Please regenerate the narrative flow by modifying ONLY the selection portion of the complete text.
+Do not regenerate any other aspect of the complete text and ONLY give the output.
+
+<COMPLETE TEXT>
+{complete}
+</COMPLETE TEXT> 
+
+<SELECTED PORTION>
+{selected}
+</SELECTED PORTION>
+
+Please make the text of the selection portion {choice}
+
+Generate and return the complete text containing the modification, without providing any other information or sentences.
+                    
+                    
+        """,
+        )
+
+
+        llm = EdenAI(edenai_api_key="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiYTU5M2FiNDItZTE2NS00ZWEzLTg3YzctMTYyYTI0MWI1ODlkIiwidHlwZSI6ImFwaV90b2tlbiJ9.iGkirNWTu4L7bTXUUqC6BgJPPAYWa61XryN_X8KXKKg", provider="openai", temperature=0.2, max_tokens=250)
+        chain = LLMChain(prompt=prompt, llm=llm)
+        
+
+        
+        out = chain.run( complete=complete, selected=selected , choice=choice)
+        return {"output": str(out) , "code": "200" }
+
+
+
 
 
 @app.post('/insert')
