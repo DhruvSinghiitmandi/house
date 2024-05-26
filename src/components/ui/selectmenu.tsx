@@ -2,16 +2,9 @@ import { forwardRef, useEffect, useState } from 'react';
 import { Button } from './button';
 import { Sparkles } from 'lucide-react';
 import axios from 'axios';
-interface GenProps {
-    flag: any;
-    content: any;
-    feature: any;
-    length : any;
-    brand : any;
-    tone: any;
-  }
+import GenProps from '@/utils/interfaces';
 
-const SelectMenu = forwardRef<GenProps, {} >((props , ref) => {
+const SelectMenu = forwardRef<GenProps, {}>(({}, ref) => {
     const [selection, setSelection] = useState<string>();
     const [position, setPosition] = useState<Record<string, number>>();
 
@@ -52,39 +45,77 @@ const SelectMenu = forwardRef<GenProps, {} >((props , ref) => {
     }, []);
 
 
-     function handleshort(event: any){
+    function handleshort(_event: any) {
         console.log(selection)
-        console.log(ref?.current?)
-        const url = 'http://127.0.0.1:8000/generate';
-        const params = {
-            brand: ref?.current?.brand,
-            feature: ref?.current?.feature,
-            length: ref?.current?.length,
-            tone: ref?.current?.tone,
 
-        };
+        if (ref != null && 'current' in ref) {
+            console.log(ref.current);
+            const url = 'http://127.0.0.1:8000/regenerate';
+            const params = {
+                complete: ref?.current?.content,
+                selected: selection,
+                choice: "shorter",
 
-        setPosition(undefined);
-        axios.post(url, { params })
-            .then(response => {
-                setPosition(undefined)
-                console.log("receivevd")
 
-                const con: string = JSON.parse(JSON.stringify(response)).data.output.toString();
-                ref.current = { flag: 1, content: con, brand: ref?.current?.brand, feature: ref?.current?.feature, length: ref?.current?.length, tone: ref?.current?.tone }
-                console.log(response.data.output);
-                setPosition(undefined);
-                
+            };
 
-            })
-            .catch(error => {
-                console.error('Error:', error);
-            });
+            setPosition(undefined);
+            axios.post(url, { params })
+                .then(response => {
+                    setPosition(undefined)
+                    console.log("receivevd")
+
+                    const con: string = JSON.parse(JSON.stringify(response)).data.output.toString();
+                    ref.current = { flag: ref?.current?.flag, content: con, brand: ref?.current?.brand, feature: ref?.current?.feature, length: ref?.current?.length, tone: ref?.current?.tone }
+
+                    // ref?.current.content = con;
+
+                    console.log(response.data.output);
+                    if (window.getSelection()) window.getSelection()?.removeAllRanges();
+
+
+
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
+        }
+
+
 
     }
 
-    function handlelong(event: any): void {
+    function handlelong(_event: any): void {
         console.log(selection)
+        if (ref != null && 'current' in ref) {
+            console.log(ref?.current)
+
+            const url = 'http://127.0.0.1:8000/regenerate';
+            const params = {
+                complete: ref?.current?.content,
+                selected: selection,
+                choice: "longer",
+
+
+            };
+
+            setPosition(undefined);
+            axios.post(url, { params })
+                .then(response => {
+                    setPosition(undefined)
+                    console.log("receivevd")
+
+                    const con: string = JSON.parse(JSON.stringify(response)).data.output.toString();
+                    ref.current = { flag: 1, content: con, brand: ref?.current?.brand, feature: ref?.current?.feature, length: ref?.current?.length, tone: ref?.current?.tone }
+                    console.log(response.data.output);
+                    if (window.getSelection()) window.getSelection()?.removeAllRanges();
+
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
+        }
+
     }
 
     return (

@@ -2,47 +2,41 @@ import {
   Card,
   CardContent,
   CardDescription,
-  CardFooter,
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
 
-import { Sparkles } from 'lucide-react';
 
 import Selectmenu from "./selectmenu";
 import { Button } from "./button";
 import axios from "axios";
-interface GenProps {
-  flag: any;
-  content: any;
-  feature: any;
-  length: any;
-  brand: any;
-  tone: any;
-}
+
+import GenProps from "@/utils/interfaces";
 
 
-import { FC, Ref, forwardRef, useEffect, useRef, useState } from "react";
+import {  forwardRef, useEffect, useState } from "react";
 
-interface ChildProp { }
 
-import SelectMenu from "./selectmenu";
-const Gen = forwardRef<GenProps, {} >((props , ref) => {
-  console.log(ref?.current?.brand); // Access the current value of the ref
+const Gen = forwardRef<GenProps, {} >(({} , ref) => {
+  
+  if(ref != null && 'current' in ref)console.log(ref?.current?.brand); // Access the current value of the ref
  
 
   async function Pushdb() {
     const url = 'http://127.0.0.1:8000/insert';
-    const params = {
-      brand:  ref?.current?.brand ,
-      feature:  ref?.current.feature ,
-      length:  ref?.current.length ,
-      tone:  ref?.current.tone ,
-      out:  ref?.current.content 
-    };
+    
+    if(ref != null && 'current' in ref){
+      const params = {
+        brand:  ref?.current?.brand ,
+        feature:  ref?.current?.feature ,
+        length:  ref?.current?.length ,
+        tone:  ref?.current?.tone ,
+        out:  ref?.current?.content 
+      };
+          // const params { brand = "", feature = "", length = 0, tone = "", content: out = "" } = ref?.current ?? {};
 
-    await axios.post(url, { params })
-      .then(response => {
+      await axios.post(url, { params })
+      .then( () => {
         console.log("pushed")
         //   const con:string = JSON.parse(JSON.stringify(response)).data.output.toString();
         //   ref.current = { flag: 1, content: con , brand : data.brand , feature: data.feature , length: data.length , tone: data.tone }
@@ -51,17 +45,16 @@ const Gen = forwardRef<GenProps, {} >((props , ref) => {
       .catch(error => {
         console.error('Error:', error);
       });
+    }
+    
+    
 
   }
 
-  function handleselect() {
-    console.log("selected")
-  }
 
+  if (ref != null  && 'current' in ref && ref?.current?.flag) {
 
-  if (ref.current.flag) {
-
-    const [selection, setSelection] = useState<any>();
+    const [selection, setSelection] = useState<string>();
     const [position, setPosition] = useState<Record<string, number>>();
 
     useEffect(() => {
@@ -93,10 +86,10 @@ const Gen = forwardRef<GenProps, {} >((props , ref) => {
 
       <div className="mt-6">
         <Selectmenu ref={ref}></Selectmenu>
-        <Card onSelect={handleselect} onSelectCapture={handleselect}>
+        <Card >
           <CardHeader>
-            <CardTitle>Image Title</CardTitle>
-            <CardDescription onSelect={handleselect} onSelectCapture={handleselect}>
+            <CardTitle>Property Brochure</CardTitle>
+            <CardDescription >
 
               {ref?.current?.content}
             </CardDescription>

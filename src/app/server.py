@@ -140,7 +140,7 @@ async def ins(payload :  Dict[Any, Any]) -> Dict[str,int]:
         print(next_id)
 
         data = supabase.table('house').insert({
-        "id": 111,
+        "id": 119,
         "Positioning": brand,
         "Features": feature,
         "Tone": tone,
