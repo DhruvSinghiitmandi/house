@@ -32,16 +32,7 @@ async def redirect_root_to_docs():
     return RedirectResponse("/docs")
      
 
-@app.post('/insert')
-async def ins(brand,feature,length,tone,out):
-    try:
-        data = supabase.table('house').select("*").execute()
-        print(len(list(data)) + 1) 
-        data= supabase.table('house').insert({"id":len(list(data)) + 1,"Positioning": brand, "Features" : feature , "Tone": tone, "Length" : length ,"Output": out}).execute()
-        print(data)
-        return {"code" : 200}
-    except:
-        return {"code" : 400}
+
 
 @app.post("/generate")
 async def generate(payload :  Dict[Any, Any]) -> Dict[str,str]: 
@@ -90,7 +81,35 @@ async def generate(payload :  Dict[Any, Any]) -> Dict[str,str]:
 
 
 
+@app.post('/insert')
+async def ins(payload :  Dict[Any, Any]) -> Dict[str,int]:
+    try:
+        print(payload['params'])
+        brand:str = payload['params']['brand']
+        feature:str = payload['params']['feature']
+        length:str = payload['params']['length']
+        tone:str = payload['params']['tone']
+        out:str = payload["params"]['out']
+        data = supabase.table('house').select("*").execute()
 
+        print(data, len(list(data)))
+
+        next_id = len(list(data)) + 1
+        print(next_id)
+
+        data = supabase.table('house').insert({
+        "id": 111,
+        "Positioning": brand,
+        "Features": feature,
+        "Tone": tone,
+        "Length": length,
+        "Output": out
+        }).execute()
+
+        print(data)
+        return {"code" : 200}
+    except:
+        return {"code" : 400}
 
 
 

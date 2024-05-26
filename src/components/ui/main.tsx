@@ -52,11 +52,15 @@ const FormSchema = z.object({
   })
 })
 interface GenProps {
-    flag: any,
-    content: any ;
+    flag: any;
+    content: any;
+    feature: any;
+    length : any;
+    brand : any;
+    tone: any;
   }
 export function InputForm() {
-    const ref = useRef<GenProps | null>({flag: 0,content: ""})
+    const ref = useRef<GenProps >({flag: 0,content: "",feature:"",length:"",brand: "",tone: ""});
 
 
   const form = useForm<z.infer<typeof FormSchema>>({
@@ -73,14 +77,15 @@ const params = {
   brand: data.brand,
   feature: data.feature,
   length: data.length,
-  tone: data.tone
+  tone: data.tone,
+  
 };
 
 await axios.post(url, { params })
   .then(response => {
     console.log("receivevd")
     const con:string = JSON.parse(JSON.stringify(response)).data.output.toString();
-    ref.current = { flag: 1, content: con  }
+    ref.current = { flag: 1, content: con , brand : data.brand , feature: data.feature , length: data.length , tone: data.tone }
     console.log(response.data.output);
   })
   .catch(error => {
@@ -168,7 +173,7 @@ await axios.post(url, { params })
                         )}
                     />
                 </div>
-                <Gen content={ref.current?.content} flag={ref.current?.flag}></Gen>
+                <Gen ref = {ref}></Gen>
                 
             </form>
         </Form>
